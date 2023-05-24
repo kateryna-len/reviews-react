@@ -1,24 +1,66 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+import reviews from './data';
+import { FaChevronLeft, FaChevronRight, FaQuoteRight } from 'react-icons/fa';
 
 function App() {
+  const [index, setIndex] = useState(0);
+  const { name, job, image, text } = reviews[index];
+
+  const checkNumber = (number) => {
+    if (number > reviews.length - 1) {
+      return 0;
+    }
+    if (number < 0) {
+      return reviews.length - 1;
+    }
+    return number;
+  };
+
+  const prevPerson = () => {
+    setIndex((currentIndex) => {
+      const newIndex = currentIndex - 1;
+      return checkNumber(newIndex);
+    });
+  };
+
+  const nextPerson = () => {
+    setIndex((currentIndex) => {
+      const newIndex = currentIndex + 1;
+      return checkNumber(newIndex);
+    });
+  };
+
+  const randomPerson = () => {
+    const randomNumber = Math.floor(Math.random() * reviews.length);
+    setIndex(checkNumber(randomNumber));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main>
+      <article className="review">
+        <div className="img-container">
+          <img src={image} alt={name} className="person-img" />
+          <span className="quote-icon">
+            <FaQuoteRight />
+          </span>
+        </div>
+        <h4 className="author">{name}</h4>
+        <p className="job">{job}</p>
+        <p className="info">{text}</p>
+        <div className="btn-container">
+          <button className="prev-btn" onClick={prevPerson}>
+            <FaChevronLeft />
+          </button>
+          <button className="next-btn" onClick={nextPerson}>
+            <FaChevronRight />
+          </button>
+        </div>
+        <button className="btn btn-hipster" onClick={randomPerson}>
+          suprise me
+        </button>
+      </article>
+    </main>
   );
 }
 
